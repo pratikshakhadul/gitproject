@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Employee registration form for the Employee Management System.">
+  <title>Employee Registration | Employee Management System</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --surface: #ffffff;
+      --page: #f3f6fb;
+      --focus: rgba(37, 99, 235, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px 24px;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .page {
+      width: min(100%, 1040px);
+      margin: 0 auto;
+    }
+
+    .form-card {
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid #e7edf5;
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.09);
+    }
+
+    .form-header {
+      padding: 34px 40px 30px;
+      color: #fff;
+      background: linear-gradient(120deg, #1d4ed8, #3b82f6);
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: #dbeafe;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 4vw, 2.15rem);
+      line-height: 1.2;
+    }
+
+    .form-header p:last-child {
+      margin: 10px 0 0;
+      color: #eff6ff;
+    }
+
+    form {
+      padding: 8px 40px 34px;
+    }
+
+    .form-section {
+      padding: 27px 0 30px;
+      border-bottom: 1px solid #e8edf4;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 20px;
+      color: #1e3a8a;
+      font-size: 1.08rem;
+      font-weight: 700;
+    }
+
+    .section-heading::before {
+      width: 4px;
+      height: 22px;
+      border-radius: 4px;
+      background: var(--blue);
+      content: "";
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 22px;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    .field--full {
+      grid-column: 1 / -1;
+    }
+
+    label,
+    .field-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #334155;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .required {
+      color: #dc2626;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 45px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      outline: none;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    input:hover,
+    select:hover,
+    textarea:hover {
+      border-color: #94a3b8;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--focus);
+    }
+
+    input[type="file"] {
+      padding: 8px;
+      color: var(--muted);
+    }
+
+    input[type="file"]::file-selector-button {
+      margin-right: 10px;
+      padding: 7px 10px;
+      border: 0;
+      border-radius: 6px;
+      background: #eff6ff;
+      color: var(--blue-dark);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 22px;
+      min-height: 45px;
+    }
+
+    .choice {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: #475569;
+      font-size: 0.92rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .choice input {
+      width: 17px;
+      min-height: 17px;
+      height: 17px;
+      margin: 0;
+      accent-color: var(--blue);
+    }
+
+    .hint {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 12px;
+      padding-top: 26px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      font: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .button--primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .button--primary:hover {
+      background: var(--blue-dark);
+      box-shadow: 0 5px 14px rgba(37, 99, 235, 0.22);
+    }
+
+    .button--secondary {
+      border-color: var(--line);
+      background: #fff;
+      color: #334155;
+    }
+
+    .button--secondary:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .button--cancel {
+      border-color: #fecaca;
+      background: #fff;
+      color: #b91c1c;
+    }
+
+    .button--cancel:hover {
+      border-color: #fca5a5;
+      background: #fef2f2;
+    }
+
+    footer {
+      padding: 20px 12px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 18px 12px;
+      }
+
+      .form-card {
+        border-radius: 13px;
+      }
+
+      .form-header {
+        padding: 27px 22px 24px;
+      }
+
+      form {
+        padding: 2px 22px 24px;
+      }
+
+      .form-section {
+        padding: 23px 0 25px;
+      }
+
+      .fields {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .field--full {
+        grid-column: auto;
+      }
+
+      .form-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .button--primary {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="form-card">
+      <header class="form-header">
+        <p class="eyebrow">Employee Management System</p>
+        <h1>Employee Registration</h1>
+        <p>Enter the employee information below. Fields marked <span aria-hidden="true">*</span> are required.</p>
+      </header>
+
+      <form action="#" method="post" enctype="multipart/form-data">
+        <section class="form-section" aria-labelledby="personal-heading">
+          <h2 class="section-heading" id="personal-heading">Personal Details</h2>
+          <div class="fields">
+            <div class="field">
+              <label for="employee-id">Employee ID <span class="required">*</span></label>
+              <input id="employee-id" name="employee_id" type="text" autocomplete="off" required>
+            </div>
+            <div class="field">
+              <label for="full-name">Full Name <span class="required">*</span></label>
+              <input id="full-name" name="full_name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="father-name">Father's Name</label>
+              <input id="father-name" name="father_name" type="text">
+            </div>
+            <div class="field">
+              <label for="mother-name">Mother's Name</label>
+              <input id="mother-name" name="mother_name" type="text">
+            </div>
+            <div class="field">
+              <label for="date-of-birth">Date of Birth <span class="required">*</span></label>
+              <input id="date-of-birth" name="date_of_birth" type="date" autocomplete="bday" required>
+            </div>
+            <div class="field">
+              <span class="field-label" id="gender-label">Gender <span class="required">*</span></span>
+              <div class="choice-group" role="group" aria-labelledby="gender-label">
+                <label class="choice"><input name="gender" type="radio" value="female" required> Female</label>
+                <label class="choice"><input name="gender" type="radio" value="male"> Male</label>
+                <label class="choice"><input name="gender" type="radio" value="non-binary"> Non-binary</label>
+                <label class="choice"><input name="gender" type="radio" value="prefer-not-to-say"> Prefer not to say</label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="marital-status">Marital Status</label>
+              <select id="marital-status" name="marital_status">
+                <option value="">Select status</option>
+                <option>Single</option>
+                <option>Married</option>
+                <option>Divorced</option>
+                <option>Widowed</option>
+                <option>Prefer not to say</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="photo">Photo</label>
+              <input id="photo" name="photo" type="file" accept="image/*">
+              <p class="hint">Choose an image file from your device.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="contact-heading">
+          <h2 class="section-heading" id="contact-heading">Contact Details</h2>
+          <div class="fields">
+            <div class="field">
+              <label for="email">Email Address <span class="required">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="mobile">Mobile Number <span class="required">*</span></label>
+              <input id="mobile" name="mobile" type="tel" autocomplete="tel" required>
+            </div>
+            <div class="field">
+              <label for="alternate-mobile">Alternate Mobile</label>
+              <input id="alternate-mobile" name="alternate_mobile" type="tel">
+            </div>
+            <div class="field">
+              <label for="city">City</label>
+              <input id="city" name="city" type="text" autocomplete="address-level2">
+            </div>
+            <div class="field field--full">
+              <label for="address">Address</label>
+              <textarea id="address" name="address" autocomplete="street-address"></textarea>
+            </div>
+            <div class="field">
+              <label for="state">State / Province</label>
+              <input id="state" name="state" type="text" autocomplete="address-level1">
+            </div>
+            <div class="field">
+              <label for="country">Country</label>
+              <input id="country" name="country" type="text" autocomplete="country-name">
+            </div>
+            <div class="field">
+              <label for="pin-code">PIN / ZIP Code</label>
+              <input id="pin-code" name="pin_code" type="text" autocomplete="postal-code">
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="employment-heading">
+          <h2 class="section-heading" id="employment-heading">Employment Details</h2>
+          <div class="fields">
+            <div class="field">
+              <label for="department">Department <span class="required">*</span></label>
+              <select id="department" name="department" required>
+                <option value="">Select department</option>
+                <option>Administration</option>
+                <option>Engineering</option>
+                <option>Finance</option>
+                <option>Human Resources</option>
+                <option>Marketing</option>
+                <option>Operations</option>
+                <option>Sales</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="designation">Designation <span class="required">*</span></label>
+              <input id="designation" name="designation" type="text" required>
+            </div>
+            <div class="field">
+              <label for="employee-type">Employee Type <span class="required">*</span></label>
+              <select id="employee-type" name="employee_type" required>
+                <option value="">Select employee type</option>
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Contract</option>
+                <option>Intern</option>
+                <option>Temporary</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="joining-date">Joining Date <span class="required">*</span></label>
+              <input id="joining-date" name="joining_date" type="date" required>
+            </div>
+            <div class="field">
+              <label for="work-location">Work Location</label>
+              <input id="work-location" name="work_location" type="text">
+            </div>
+            <div class="field">
+              <label for="reporting-manager">Reporting Manager</label>
+              <input id="reporting-manager" name="reporting_manager" type="text">
+            </div>
+            <div class="field">
+              <label for="employment-status">Status <span class="required">*</span></label>
+              <select id="employment-status" name="employment_status" required>
+                <option value="">Select status</option>
+                <option>Active</option>
+                <option>Probation</option>
+                <option>On Leave</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="salary-heading">
+          <h2 class="section-heading" id="salary-heading">Salary Details</h2>
+          <div class="fields">
+            <div class="field">
+              <label for="basic-salary">Basic Salary <span class="required">*</span></label>
+              <input id="basic-salary" name="basic_salary" type="number" min="0" step="0.01" inputmode="decimal" required>
+            </div>
+            <div class="field">
+              <label for="hra">HRA</label>
+              <input id="hra" name="hra" type="number" min="0" step="0.01" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="allowances">Allowances</label>
+              <input id="allowances" name="allowances" type="number" min="0" step="0.01" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="deductions">Deductions</label>
+              <input id="deductions" name="deductions" type="number" min="0" step="0.01" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="total-salary">Total Salary</label>
+              <input id="total-salary" name="total_salary" type="number" min="0" step="0.01" inputmode="decimal">
+              <p class="hint">Enter the total amount; this form does not calculate salary automatically.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="bank-heading">
+          <h2 class="section-heading" id="bank-heading">Bank Details</h2>
+          <div class="fields">
+            <div class="field">
+              <label for="bank-name">Bank Name</label>
+              <input id="bank-name" name="bank_name" type="text" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="account-holder">Account Holder</label>
+              <input id="account-holder" name="account_holder" type="text" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="account-number">Account Number</label>
+              <input id="account-number" name="account_number" type="text" inputmode="numeric" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="ifsc-code">IFSC Code</label>
+              <input id="ifsc-code" name="ifsc_code" type="text" autocapitalize="characters" autocomplete="off">
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="login-heading">
+          <h2 class="section-heading" id="login-heading">Login Details</h2>
+          <div class="fields">
+            <div class="field">
+              <label for="username">Username <span class="required">*</span></label>
+              <input id="username" name="username" type="text" autocomplete="username" required>
+            </div>
+            <div class="field">
+              <label for="password">Password <span class="required">*</span></label>
+              <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+              <p class="hint">Use at least 8 characters.</p>
+            </div>
+            <div class="field">
+              <label for="confirm-password">Confirm Password <span class="required">*</span></label>
+              <input id="confirm-password" name="confirm_password" type="password" autocomplete="new-password" minlength="8" required>
+              <p class="hint">Password matching requires server-side validation.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="education-heading">
+          <h2 class="section-heading" id="education-heading">Education Details</h2>
+          <div class="fields">
+            <div class="field">
+              <label for="qualification">Qualification</label>
+              <input id="qualification" name="qualification" type="text">
+            </div>
+            <div class="field">
+              <label for="college">College / Institution</label>
+              <input id="college" name="college" type="text">
+            </div>
+            <div class="field">
+              <label for="passing-year">Passing Year</label>
+              <input id="passing-year" name="passing_year" type="number" min="1950" max="2100" step="1" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="experience">Experience (years)</label>
+              <input id="experience" name="experience" type="number" min="0" step="0.1" inputmode="decimal">
+            </div>
+            <div class="field field--full">
+              <label for="skills">Skills</label>
+              <textarea id="skills" name="skills" placeholder="List relevant skills"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="emergency-heading">
+          <h2 class="section-heading" id="emergency-heading">Emergency Contact Details</h2>
+          <div class="fields">
+            <div class="field">
+              <label for="emergency-name">Contact Name</label>
+              <input id="emergency-name" name="emergency_contact_name" type="text">
+            </div>
+            <div class="field">
+              <label for="relationship">Relationship</label>
+              <input id="relationship" name="emergency_contact_relationship" type="text">
+            </div>
+            <div class="field">
+              <label for="emergency-phone">Phone Number</label>
+              <input id="emergency-phone" name="emergency_contact_phone" type="tel">
+            </div>
+          </div>
+        </section>
+
+        <div class="form-actions">
+          <button class="button button--primary" type="submit">Submit Registration</button>
+          <button class="button button--secondary" type="reset">Reset Form</button>
+          <a class="button button--cancel" href="index.html">Cancel</a>
+        </div>
+      </form>
+    </div>
+    <footer>© Employee Management System</footer>
+  </main>
+</body>
+</html>
